@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     
     // API取得の開始処理
     func getData() {
-        let URL = NSURL(string: "http://noaniels.azurewebsites.net/api/userapi");
+        let URL = NSURL(string: "http://noaniels.azurewebsites.net/api/userapi/getusers");
         let req = NSURLRequest(URL: URL!);
         let connection: NSURLConnection = NSURLConnection(request: req, delegate: self, startImmediately: false)!;
         
@@ -37,15 +37,18 @@ class ViewController: UIViewController {
     
     // 取得したAPIデータの処理
     func response(res: NSURLResponse!, data: NSData!, error: NSError!){
-        let json:NSDictionary = NSJSONSerialization.JSONObjectWithData(data,
-            options: NSJSONReadingOptions.AllowFragments, error: nil) as NSDictionary
+        let json:NSArray = NSJSONSerialization.JSONObjectWithData(data,
+            options: NSJSONReadingOptions.AllowFragments, error: nil) as NSArray
         
-        let res:NSDictionary = json.objectForKey("response") as NSDictionary
-        let pref:NSArray = res.objectForKey("prefecture") as NSArray
+//        let res:NSDictionary = json.objectForKey("response") as NSDictionary
+//        let pref:NSArray = res.objectForKey("prefecture") as NSArray
         
         // １行ずつログに表示
-        for var i=0 ; i<pref.count ; i++ {
-            println(pref[i])
+        for var i=0 ; i<json.count ; i++ {
+            println(json[i])
+            println(json[i].objectForKey("UserId") as NSInteger)
+            println(json[i].objectForKey("Name") as NSString)
+            
         }
     }
     
